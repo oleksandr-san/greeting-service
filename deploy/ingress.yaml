@@ -1,0 +1,38 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: greetings-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: /(health|hello.*)
+            pathType: Exact
+            backend:
+              service:
+                name: greeting-service
+                port:
+                  number: 8000
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: greetings-ingress-rewrite
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /hello?emoji&name=$1
+spec:
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: /otusapp/([^\/]+)(/|$)(.*)
+            pathType: Exact
+            backend:
+              service:
+                name: greeting-service
+                port:
+                  number: 8000

@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: greeting-service
+spec:
+  selector:
+    app: greeting-app
+  ports:
+    - port: 8000
